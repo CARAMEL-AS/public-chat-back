@@ -4,4 +4,6 @@ Rails.application.routes.draw do
 
   root to: 'group#rootRoute'
 
+  resources :group
+
 end
