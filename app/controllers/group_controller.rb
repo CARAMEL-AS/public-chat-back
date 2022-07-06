@@ -32,7 +32,7 @@ class GroupController < ActionController::API
             newGroup = Group.create(
                 admin_id: params[:uid],
                 group_name: params[:groupName],
-                group_code: 
+                group_code: generateCode
             )
         else
             render json: { 'error': 'Invalid Parameters'}

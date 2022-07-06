@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_24_203635) do
+ActiveRecord::Schema.define(version: 2022_06_25_155752) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "groups", force: :cascade do |t|
+    t.integer "admin_id"
+    t.string "group_name"
+    t.string "group_code"
+    t.integer "member_ids", default: [], array: true
+    t.string "messages", default: [], array: true
+    t.string "banned_member_ids", default: [], array: true
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
