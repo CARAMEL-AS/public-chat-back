@@ -1,9 +1,5 @@
 class GroupController < ActionController::API
 
-    def rootRoute
-        render json: {'status': 0, 'message': 'Welcome to public chat'}
-    end
-
     def generateCode
         chars = '0123456789QWERTYUIOPASDFGHJKLZXCVBNM'
         inviteCode = ''
