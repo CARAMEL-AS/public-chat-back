@@ -1,2 +1,0 @@
-class CreateStudent < ApplicationRecord
-end

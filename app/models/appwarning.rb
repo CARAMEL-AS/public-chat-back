@@ -1,2 +1,0 @@
-class Appwarning < ApplicationRecord
-end
