@@ -23,18 +23,6 @@ class GroupController < ActionController::API
         end
     end
 
-    def create
-        if params[:uid] && params[:groupName]
-            newGroup = Group.create(
-                admin_id: params[:uid],
-                group_name: params[:groupName],
-                group_code: generateCode
-            )
-        else
-            render json: { 'error': 'Invalid Parameters'}
-        end
-    end
-
     def blockMember
         if params[:uid] && params[:groupId] && params[:memberId]
             group = Group.find_by(id: params[:groupId])
@@ -63,34 +51,6 @@ class GroupController < ActionController::API
         else
             render json: { 'error': 'Invalid Parameters'}
         end
-    end
-
-    def delete
-        if params[:uid] && params[:groupId]
-            group = Group.find_by(id: params[:groupId])
-            if group.admin_id == params[:uid]
-                group.delete
-                render json: { 'data': 'Success'}
-            else
-                render json: { 'error': 'Invalid User'}
-            end
-        else
-            render json: { 'error': 'Invalid Parameters'}
-        end
-    end
-
-    def join
-        if params[:memberid] && params[:groupCode]
-            Group.all.length.times do |index|
-                
-            end
-        else
-            render json: { 'error': 'Invalid Parameters'}
-        end
-    end
-
-    def leave
-
     end
 
     def getGroupMembers
