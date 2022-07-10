@@ -9,12 +9,17 @@ class UserController < ApplicationController
     end
 
     def index #user login - GET /user
-        user = User.find_by(email: auth_params)
-        if user && user.authenticate(params[:password_digest])
-            renderObj = user.as_json(except: [:created_at, :updated_at], include: [:appwarnings])
-            render json: renderObj, status: :ok
+        user = User.find_by(email: params[:email])
+        if user
+            if user.password_digest == params[:password_digest]
+                renderObj = user.as_json(except: [:created_at, :updated_at], include: [:appwarnings])
+                render json: renderObj, status: :ok
+            else
+                renderObj = { 'error': 'Invalid password' }
+                render json: renderObj, status: :unauthorized
+            end
         else
-            renderObj = { 'error': 'Invalid password!' }
+            renderObj = { 'error': 'Account not found!' }
             render json: renderObj, status: :not_found
         end
     end
