@@ -11,7 +11,8 @@ class UserController < ApplicationController
     def index #user login - GET /user
         user = User.find_by(email: auth_params)
         if user && user.authenticate(params[:password_digest])
-            render json: user.as_json(except: [:created_at, :updated_at])
+            renderObj = user.as_json(except: [:created_at, :updated_at], include: [:appwarnings])
+            render json: renderObj, status: :ok
         else
             renderObj = { 'error': 'Invalid password!' }
             render json: renderObj, status: :not_found
@@ -20,6 +21,7 @@ class UserController < ApplicationController
 
     def create #new user - POST /user
         user = User.create!(new_account_params).as_json(except: [:created_at, :updated_at])
+        Appwarning.create({user_id: user.id})
         render json: user, status: :created
     end
 
@@ -35,7 +37,7 @@ class UserController < ApplicationController
             renderObj = {'error': 'Failed to update user!'}
             render json: renderObj, status: :unprocessable_entity
         end
-    end 
+    end
 
     def destroy #delete user account - DELETE /user/:id
         User.find(find_user_params).delete

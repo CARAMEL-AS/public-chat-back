@@ -3,7 +3,9 @@
 one:
   user_id: 1
   message: MyString
+  time: MyString
 
 two:
   user_id: 1
   message: MyString
+  time: MyString

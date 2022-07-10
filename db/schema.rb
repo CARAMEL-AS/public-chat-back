@@ -10,30 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_09_203047) do
+ActiveRecord::Schema.define(version: 2022_07_09_215909) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "appwarnings", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "count"
+    t.integer "count", default: 3
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "groups", force: :cascade do |t|
-    t.integer "user_id"
-    t.string "group_name"
-    t.string "group_code"
-    t.integer "member_ids", default: [], array: true
-    t.string "messages", default: [], array: true
-    t.string "banned_member_ids", default: [], array: true
-  end
-
   create_table "messages", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "group_id"
     t.string "message"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -43,7 +33,7 @@ ActiveRecord::Schema.define(version: 2022_07_09_203047) do
     t.string "email"
     t.string "password_digest"
     t.boolean "online", default: true
-    t.string "username", default: "Ben Lyon"
+    t.string "username", default: "Rusty Steele"
     t.boolean "status", default: true
   end
 
