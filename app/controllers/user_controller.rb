@@ -26,7 +26,6 @@ class UserController < ApplicationController
 
     def create #new user - POST /user
         user = User.create!(new_account_params).as_json(except: [:created_at, :updated_at])
-        Appwarning.create({user_id: user.id})
         render json: user, status: :created
     end
 

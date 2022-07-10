@@ -17,12 +17,23 @@ class MessageController < ApplicationController
             is_it_inappropriate_message = is_inappropriate_message(params[:message])
             if is_it_inappropriate_message
                 warning = Appwarning.find_by(user_id: params[:user_id])
-                warning.count = warning.count + 1
-                warning.save
-                renderObj = {
-                    'error': 'Inappropriate message detected!',
-                    'warningCount': warning.count
-                }
+                renderObj = {}
+                if warning
+                    warning.count = warning.count + 1
+                    warning.save
+                    renderObj = {
+                        'error': 'Inappropriate message detected!',
+                        'warningCount': warning.count
+                    }
+                else
+                    warning = Appwarning.create(user_id: params[:user_id)
+                    warning.count = warning.count + 1
+                    warning.save
+                    renderObj = {
+                        'error': 'Inappropriate message detected!',
+                        'warningCount': warning.count
+                    }
+                end
                 render json: renderObj, status: :not_acceptable
             else
                 firebase = Firebase::Client.new('https://invite-me-9a07f-default-rtdb.firebaseio.com')
