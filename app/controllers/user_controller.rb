@@ -4,7 +4,7 @@ class UserController < ApplicationController
     rescue_from ActiveRecord::RecordInvalid, with: :invalid_auth_params
 
     def allUsers
-        renderObj = User.all
+        renderObj = User.all.to_json(except: [:created_at, :updated_at, :password_digest])
         render json: renderObj, status: :ok
     end
 
@@ -12,7 +12,7 @@ class UserController < ApplicationController
         user = User.find_by(email: params[:email])
         if user
             if user.password_digest == params[:password_digest]
-                renderObj = user.as_json(except: [:created_at, :updated_at], include: [:appwarnings])
+                renderObj = user.as_json(except: [:created_at, :updated_at, :password_digest], include: [:appwarnings])
                 render json: renderObj, status: :ok
             else
                 renderObj = { 'error': 'Invalid password' }
@@ -25,7 +25,9 @@ class UserController < ApplicationController
     end
 
     def create #new user - POST /user
-        user = User.create!(new_account_params).as_json(except: [:created_at, :updated_at])
+        user = User.create({email: params[:email], password_digest: params[:password_digest]}).as_json(except: [:created_at, :updated_at, :password_digest])
+        firebase = Firebase::Client.new('https://invite-me-9a07f-default-rtdb.firebaseio.com')
+        response = firebase.push("users", user)
         render json: user, status: :created
     end
 
@@ -36,7 +38,7 @@ class UserController < ApplicationController
         user.username = params[:username]
         user.status = params[:status]
         if user.save
-            render json: user.as_json(except: [:updated_at, :updated_at]), status: :ok
+            render json: user.as_json(except: [:updated_at, :updated_at, :password_digest]), status: :ok
         else
             renderObj = {'error': 'Failed to update user!'}
             render json: renderObj, status: :unprocessable_entity
@@ -54,7 +56,7 @@ class UserController < ApplicationController
     private
 
     def auth_params
-        params.permit(:email)
+        params.permit(:email, :password_digest)
     end
 
     def new_account_params
