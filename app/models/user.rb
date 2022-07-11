@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
     has_many :appwarnings
 
     validates :password_digest, presence: true 
-    validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+    validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true
 
     has_secure_password
 end
