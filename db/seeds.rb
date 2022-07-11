@@ -1,4 +1,6 @@
 User.all.destroy_all
+Message.all.destroy_all
+Appwarning.all.destroy_all
 puts "🧹 cleaned successfully"
 bot = User.create({
     email: 'bot@gmail.com',
