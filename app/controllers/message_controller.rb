@@ -26,7 +26,7 @@ class MessageController < ApplicationController
                         'warningCount': warning.count
                     }
                 else
-                    warning = Appwarning.create(user_id: params[:user_id)
+                    warning = Appwarning.create(user_id: params[:user_id])
                     warning.count = warning.count + 1
                     warning.save
                     renderObj = {
