@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 2022_07_09_215909) do
 
   create_table "appwarnings", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "count", default: 3
+    t.integer "count", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 2022_07_09_215909) do
     t.string "email"
     t.string "password_digest"
     t.boolean "online", default: true
-    t.string "username", default: "Rusty Steele"
+    t.string "username", default: "Harry Beard"
     t.boolean "status", default: true
   end
 
