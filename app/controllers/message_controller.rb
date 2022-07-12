@@ -4,7 +4,7 @@ class MessageController < ApplicationController
 
     def is_inappropriate_message(message)
         inappropriate_words = ['fuck', 'shit', 'crap']
-        (inappropriate_words - message.downcase.gsub!(/[^0-9A-Za-z]/, ' ').split(' ')).length != inappropriate_words.length
+        message.downcase.gsub!(/[^0-9A-Za-z]/, ' ') ? (inappropriate_words - message.downcase.gsub!(/[^0-9A-Za-z]/, ' ').split(' ')).length != inappropriate_words.length : inappropriate_words.include?(message)
     end
 
     def index # get all messages - GET/messages
