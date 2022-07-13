@@ -53,6 +53,13 @@ class UserController < ApplicationController
         render json: renderObj, status: :ok
     end
 
+    def logout
+        user = User.find_by(id: params[:id])
+        user.online = false
+        user.save
+        render json: {'success': true }, status: :ok
+    end
+
     private
 
     def auth_params
