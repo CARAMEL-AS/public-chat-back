@@ -32,11 +32,8 @@ class UserController < ApplicationController
     end
 
     def update #update user info (login, status and so on) - POST /user/:id
-        user = User.find(find_user_params)
-        user.password_digest = params[:password_digest]
-        user.online = params[:online]
+        user = User.find_by(id: params[:id])
         user.username = params[:username]
-        user.status = params[:status]
         if user.save
             render json: user.as_json(except: [:updated_at, :updated_at, :password_digest]), status: :ok
         else
