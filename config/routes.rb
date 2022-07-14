@@ -12,6 +12,6 @@ Rails.application.routes.draw do
   resources :message, only: [:index, :create]
 
   # APPWARNING ROUTES
-  get '/clear/warning', to: 'appwarning#apologies'
+  post '/clear/warning', to: 'appwarning#apologies'
 
 end
