@@ -25,10 +25,15 @@ class UserController < ApplicationController
     end
 
     def create #new user - POST /user
-        user = User.create({email: params[:email], password_digest: params[:password_digest]}).as_json(except: [:created_at, :updated_at, :password_digest])
-        firebase = Firebase::Client.new('https://invite-me-9a07f-default-rtdb.firebaseio.com')
-        response = firebase.push("users", user)
-        render json: user, status: :created
+        user = User.create!(new_account_params)
+        user.username = Faker::FunnyName.two_word_name
+        if user.save
+            firebase = Firebase::Client.new('https://invite-me-9a07f-default-rtdb.firebaseio.com')
+            response = firebase.push("users", user)
+            render json: user.as_json(except: [:created_at, :updated_at, :password_digest]), status: :created
+        else
+            render json: {"error": 'Failed!'}, status: :unauthorized
+        end
     end
 
     def update #update user info (login, status and so on) - POST /user/:id
