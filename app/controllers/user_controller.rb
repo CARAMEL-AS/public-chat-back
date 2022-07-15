@@ -48,7 +48,7 @@ class UserController < ApplicationController
     end
 
     def destroy #delete user account - DELETE /user/:id
-        User.find(find_user_params).delete
+        User.find_by(id: params[:id]).delete
         renderObj = {
             'message': 'Successfully deleted user!'
         }
