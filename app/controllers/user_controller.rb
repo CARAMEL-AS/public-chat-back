@@ -23,8 +23,9 @@ class UserController < ApplicationController
         user = User.create!(new_account_params)
         user.username = Faker::FunnyName.two_word_name
         if user.save
-            Accverify.create({user_id: user.id, code: genCode, verified: false})
+            accver = Accverify.create({user_id: user.id, code: genCode, verified: false})
             Setting.create({user_id: user.id})
+            UserMailer.with(user: user, code: accver.code).verify_email.deliver_now
             render json: user.as_json(except: [:created_at, :updated_at, :password_digest], include: [:appwarnings, :accverify, :setting]), status: :created
         else
             render json: {"error": 'Failed!'}, status: :unauthorized
