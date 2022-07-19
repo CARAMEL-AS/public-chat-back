@@ -5,7 +5,6 @@ Rails.application.routes.draw do
 
   # AUTH ROUTES
   resources :user
-  get '/find/friend', to: 'user#allUsers'
   post 'user/:id/signout', to: 'user#logout'
 
   # MESSAGES ROUTES

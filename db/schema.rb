@@ -10,14 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_09_215909) do
+ActiveRecord::Schema.define(version: 2022_07_19_185512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "accverifies", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "code"
+    t.boolean "verified"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "appwarnings", force: :cascade do |t|
     t.integer "user_id"
     t.integer "count", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.integer "admin"
+    t.string "name"
+    t.integer "members"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -29,11 +45,27 @@ ActiveRecord::Schema.define(version: 2022_07_09_215909) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "settings", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "theme", default: "LIGHT"
+    t.string "language", default: "ENGLISH"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "socialauths", force: :cascade do |t|
+    t.string "email"
+    t.string "name"
+    t.string "image"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "password_digest"
     t.boolean "online", default: true
-    t.string "username", default: "Harry Beard"
+    t.string "username", default: "Mel Practiss"
     t.boolean "status", default: true
   end
 

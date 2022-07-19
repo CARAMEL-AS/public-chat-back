@@ -3,16 +3,11 @@ class UserController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :user_not_found
     rescue_from ActiveRecord::RecordInvalid, with: :invalid_auth_params
 
-    def allUsers
-        renderObj = User.all.to_json(except: [:created_at, :updated_at, :password_digest])
-        render json: renderObj, status: :ok
-    end
-
     def index #user login - GET /user
         user = User.find_by(email: params[:email])
         if user
             if user.password_digest == params[:password_digest]
-                renderObj = user.as_json(except: [:created_at, :updated_at, :password_digest], include: [:appwarnings])
+                renderObj = user.as_json(except: [:created_at, :updated_at, :password_digest], include: [:appwarnings, :accverify, :setting])
                 render json: renderObj, status: :ok
             else
                 renderObj = { 'error': 'Invalid password' }
@@ -28,11 +23,27 @@ class UserController < ApplicationController
         user = User.create!(new_account_params)
         user.username = Faker::FunnyName.two_word_name
         if user.save
-            firebase = Firebase::Client.new('https://invite-me-9a07f-default-rtdb.firebaseio.com')
-            response = firebase.push("users", user)
-            render json: user.as_json(except: [:created_at, :updated_at, :password_digest]), status: :created
+            Accverify.create({user_id: user.id, code: genCode, verified: false})
+            Setting.create({user_id: user.id})
+            render json: user.as_json(except: [:created_at, :updated_at, :password_digest], include: [:appwarnings, :accverify, :setting]), status: :created
         else
             render json: {"error": 'Failed!'}, status: :unauthorized
+        end
+    end
+
+    def accVerify
+        verify = Appverify.find_by(user_id: user.id)
+        if verify.code == params[:code]
+            verify.verified = true
+            if verify.save
+                firebase = Firebase::Client.new('https://invite-me-9a07f-default-rtdb.firebaseio.com')
+                response = firebase.push("users", User.find_by(id: params[:id]).as_json)
+                render json: {'data': verify}, status:statusL: :success
+            else
+                render json: {'error': 'Failed to verify!'}, status: :unprocessable_entity
+            end
+        else
+            render json: {'error': 'Failed to verify!'}, status: :unprocessable_entity
         end
     end
 
@@ -48,11 +59,20 @@ class UserController < ApplicationController
     end
 
     def destroy #delete user account - DELETE /user/:id
-        User.find_by(id: params[:id]).delete
+        user = User.find_by(id: params[:id])
         renderObj = {
             'message': 'Successfully deleted user!'
         }
-        render json: renderObj, status: :ok
+        if user.delete
+            render json: renderObj, status: :ok
+        else
+            user = Socialauth.find_by_id(params[:id])
+            if user.delete
+                render json: renderObj, status: :ok
+            else
+                render json: {'error': 'User not found'}, status: :not_found
+            end
+        end
     end
 
     def logout
@@ -82,6 +102,13 @@ class UserController < ApplicationController
 
     def invalid_auth_params(exception)
         render json: { errors: exception.record.errors.full_messages }, status: :unprocessable_entity
+    end
+
+    def genCode
+        chars = '0123456789QWERTYUIOPASDFGHJKLZXCVBNM'
+        code = ''
+        6.times do |i| code += chars[rand(0...chars.length)] end
+        code
     end
 
 end

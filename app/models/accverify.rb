@@ -1,0 +1,2 @@
+class Accverify < ApplicationRecord
+end
