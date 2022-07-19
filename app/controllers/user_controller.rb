@@ -6,9 +6,15 @@ class UserController < ApplicationController
     def index #user login - GET /user
         user = User.find_by(email: params[:email])
         if user
-            if user.password_digest == params[:password_digest]
+            if user.password_digest == params[:password_digest] && user.accverify.verified
                 renderObj = user.as_json(except: [:created_at, :updated_at, :password_digest], include: [:appwarnings, :accverify, :setting])
                 render json: renderObj, status: :ok
+            elsif !user.accverify.verified
+                accver = Accverify.find_by(user_id: user.id)
+                accver.code = genCode
+                accver.save
+                UserMailer.with(user: user, code: accver.code).verify_email.deliver_now
+                render json: {'error': 'Please verify your email'}, status: :unprocessable_entity
             else
                 renderObj = { 'error': 'Invalid password' }
                 render json: renderObj, status: :unauthorized
@@ -33,18 +39,18 @@ class UserController < ApplicationController
     end
 
     def accVerify
-        verify = Appverify.find_by(user_id: user.id)
+        verify = Accverify.find_by(user_id: params[:user_id])
         if verify.code == params[:code]
             verify.verified = true
             if verify.save
                 firebase = Firebase::Client.new('https://invite-me-9a07f-default-rtdb.firebaseio.com')
-                response = firebase.push("users", User.find_by(id: params[:id]).as_json)
-                render json: {'data': verify}, status: :success
+                response = firebase.push("users", User.find_by(id: params[:user_id]).as_json)
+                render json: {'data': verify}, status: :ok
             else
                 render json: {'error': 'Failed to verify!'}, status: :unprocessable_entity
             end
         else
-            render json: {'error': 'Failed to verify!'}, status: :unprocessable_entity
+            render json: {'error': 'Invalid Code!'}, status: :unprocessable_entity
         end
     end
 
