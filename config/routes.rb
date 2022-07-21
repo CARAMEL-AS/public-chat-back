@@ -9,9 +9,18 @@ Rails.application.routes.draw do
   post 'user/:id/verify', to: 'user#accVerify'
 
   # MESSAGES ROUTES
-  resources :message, only: [:index, :create]
+  resources :message, only: [:create]
 
   # APPWARNING ROUTES
   post '/clear/warning', to: 'appwarning#apologies'
+
+  #GROUP (ONE : ONE) ROUTES
+  get '/group/:id/all', to: 'group#getMyGroups'
+  post '/group/:id/new', to: 'group#newGroup'
+  post '/group/:id/delete', to: 'group#deleteGroup'
+
+  # SETTINGS ROUTES
+  post 'setting/update/:id/lang', to: 'setting#updateLanguage'
+  post 'setting/update/:id/updateTheme', to: 'setting#updateTheme'
 
 end

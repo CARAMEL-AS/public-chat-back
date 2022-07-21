@@ -32,8 +32,7 @@ ActiveRecord::Schema.define(version: 2022_07_19_185512) do
 
   create_table "groups", force: :cascade do |t|
     t.integer "admin"
-    t.string "name"
-    t.integer "members"
+    t.integer "member"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -69,7 +68,7 @@ ActiveRecord::Schema.define(version: 2022_07_19_185512) do
     t.string "password_digest"
     t.string "image", default: ""
     t.boolean "online", default: true
-    t.string "username", default: "I. Ball"
+    t.string "username", default: "Sal Ami"
     t.boolean "status", default: true
   end
 

@@ -7,11 +7,6 @@ class MessageController < ApplicationController
         message.downcase.gsub!(/[^0-9A-Za-z]/, ' ') ? (inappropriate_words - message.downcase.gsub!(/[^0-9A-Za-z]/, ' ').split(' ')).length != inappropriate_words.length : inappropriate_words.include?(message.downcase)
     end
 
-    def index # get all messages - GET/messages
-        messages = Message.all.to_json(except: [:updated_at])
-        render json: messages, status: :ok
-    end
-
     def create # create a new message - POST/messages
         if new_message_params
             is_it_inappropriate_message = is_inappropriate_message(params[:message])
@@ -38,9 +33,8 @@ class MessageController < ApplicationController
             else
                 firebase = Firebase::Client.new('https://invite-me-9a07f-default-rtdb.firebaseio.com')
                 newMessage = Message.create!(new_message_params)
-                response = firebase.push("messages", newMessage)
-                renderObj = Message.all.to_json(except: [:updated_at])
-                render json: renderObj, status: :created
+                response = firebase.push("chats/#{params[:group_id]}", newMessage)
+                render json: newMessage.to_json(except: [:updated_at]), status: :created
             end
         end
     end
