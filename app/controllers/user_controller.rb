@@ -14,7 +14,7 @@ class UserController < ApplicationController
                 accver.code = genCode
                 accver.save
                 UserMailer.with(user: user, code: accver.code).verify_email.deliver_now
-                render json: {'error': 'Please verify your email'}, status: :unprocessable_entity
+                render json: user.as_json(except: [:created_at, :updated_at, :password_digest], include: [:appwarnings, :accverify, :setting]), status: :ok
             else
                 renderObj = { 'error': 'Invalid password' }
                 render json: renderObj, status: :unauthorized
