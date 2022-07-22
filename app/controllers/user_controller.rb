@@ -44,8 +44,7 @@ class UserController < ApplicationController
             verify.verified = true
             if verify.save
                 firebase = Firebase::Client.new('https://invite-me-9a07f-default-rtdb.firebaseio.com')
-                response = firebase.push("users", User.find_by(id: params[:user_id]).as_json)
-                render json: user.as_json(except: [:created_at, :updated_at, :password_digest], include: [:appwarnings, :accverify, :setting]), status: :ok
+                render json: User.find_by(id: params[:user_id]).as_json(except: [:created_at, :updated_at, :password_digest], include: [:appwarnings, :accverify, :setting]), status: :ok
             else
                 render json: {'error': 'Failed to verify!'}, status: :unprocessable_entity
             end
