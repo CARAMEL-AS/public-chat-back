@@ -95,7 +95,7 @@ class UserController < ApplicationController
     end
 
     def new_account_params
-        params.permit(:email, :password_digest)
+        params.permit(:email, :password_digest, :image)
     end
 
     def find_user_params

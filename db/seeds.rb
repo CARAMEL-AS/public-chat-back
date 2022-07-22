@@ -31,7 +31,8 @@ puts "🧹 cleaned successfully"
 aftab = User.create({
     email: 'aftab@gmail.com',
     password_digest: '123ABC',
-    username: 'Aftab Sidhu'
+    username: 'Aftab Sidhu',
+    image: 'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/28.png'
 })
 Accverify.create({user_id: aftab.id, code: genCode, verified: true})
 Setting.create({user_id: aftab.id})
@@ -40,7 +41,8 @@ puts "😊 admin initialized successfully"
 bot = User.create({
     email: 'bot@chat-app.com',
     password_digest: '123IAMBOT',
-    username: 'Chat App BOT'
+    username: 'Chat App BOT',
+    image: 'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/29.png'
 })
 Accverify.create({user_id: bot.id, code: genCode, verified: true})
 Setting.create({user_id: bot.id})
