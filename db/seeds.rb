@@ -55,6 +55,7 @@ firebase.update('', {
     "users/#{aftab.id}" => aftab,
     "chats/#{group.id}/" => {
         id: group.id,
+        admin: group.admin,
         members: group.member,
         messages: [message, message2]
     }
