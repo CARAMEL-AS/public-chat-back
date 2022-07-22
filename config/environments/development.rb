@@ -35,8 +35,8 @@ Rails.application.configure do
     address:              'smtp.gmail.com',
     port:                 587,
     domain:               'gmail.com',
-    user_name:            'aftab180@gmail.com',
-    password:             'cyizgngscrwjxlxw',
+    user_name:            'ChatApp.aftab@gmail.com',
+    password:             'fugnrpdeixnceczb',
     authentication:       'plain',
     enable_starttls_auto: true  
   }
