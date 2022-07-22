@@ -68,7 +68,7 @@ ActiveRecord::Schema.define(version: 2022_07_19_185512) do
     t.string "password_digest"
     t.string "image", default: ""
     t.boolean "online", default: true
-    t.string "username", default: "Adam Bomb"
+    t.string "username", default: "Bess Twishes"
     t.boolean "status", default: true
   end
 
