@@ -33,7 +33,7 @@ class MessageController < ApplicationController
             else
                 firebase = Firebase::Client.new('https://invite-me-9a07f-default-rtdb.firebaseio.com')
                 newMessage = Message.create!(new_message_params)
-                response = firebase.push("chats/#{params[:group_id]}", newMessage)
+                response = firebase.push("chats/#{params[:group_id]}/messages", newMessage)
                 render json: newMessage.to_json(except: [:updated_at]), status: :created
             end
         end
@@ -42,7 +42,7 @@ class MessageController < ApplicationController
     private
     
     def new_message_params
-        params.permit(:user_id, :message)
+        params.permit(:user_id, :message, :group_id)
     end
 
     def invalid_message_params(exception)
