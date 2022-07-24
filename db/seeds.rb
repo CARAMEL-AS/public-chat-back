@@ -48,7 +48,7 @@ Accverify.create({user_id: bot.id, code: genCode, verified: true})
 Setting.create({user_id: bot.id})
 puts "🤖 BOT initialized successfully"
 
-group = Group.create({admin: bot.id, member: aftab.id})
+group = Group.create({admin: bot.id, members: [aftab.id], name: Faker::FunnyName.two_word_name})
 message = Message.create({user_id: bot.id, message: 'Welcome to Invite Me!', group_id: group.id})
 message2 = Message.create({user_id: aftab.id, message: 'Thank You!', group_id: group.id})
 
@@ -58,7 +58,7 @@ firebase.update('', {
     "chats/#{group.id}/" => {
         id: group.id,
         admin: group.admin,
-        members: group.member,
+        members: group.members,
         messages: [message, message2]
     }
 })

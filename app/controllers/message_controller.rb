@@ -34,7 +34,7 @@ class MessageController < ApplicationController
                 firebase = Firebase::Client.new('https://invite-me-9a07f-default-rtdb.firebaseio.com')
                 newMessage = Message.create!(new_message_params)
                 response = firebase.push("chats/#{params[:group_id]}/messages", newMessage)
-                render json: newMessage.to_json(except: [:updated_at]), status: :created
+                render json: {"success": true}, status: :created
             end
         end
     end

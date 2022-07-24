@@ -15,8 +15,8 @@ Rails.application.routes.draw do
   post '/clear/warning', to: 'appwarning#apologies'
 
   #GROUP (ONE : ONE) ROUTES
-  get '/group/:id/all', to: 'group#getMyGroups'
-  post '/group/:id/new', to: 'group#newGroup'
+  get '/group/all', to: 'group#getMyGroups'
+  post '/group/new', to: 'group#newGroup'
   post '/group/:id/delete', to: 'group#deleteGroup'
 
   # SETTINGS ROUTES
