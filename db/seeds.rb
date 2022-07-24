@@ -39,7 +39,7 @@ Setting.create({user_id: aftab.id})
 puts "😊 admin initialized successfully"
 
 bot = User.create({
-    email: 'bot@chat-app.com',
+    email: 'ChatApp.aftab@gmail.com',
     password_digest: '123IAMBOT',
     username: 'Chat App BOT',
     image: 'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/29.png'

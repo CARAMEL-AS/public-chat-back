@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 2022_07_19_185512) do
   create_table "settings", force: :cascade do |t|
     t.integer "user_id"
     t.string "theme", default: "LIGHT"
-    t.string "language", default: "ENGLISH"
+    t.string "language", default: "English (US)"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(version: 2022_07_19_185512) do
     t.string "password_digest"
     t.string "image", default: ""
     t.boolean "online", default: true
-    t.string "username", default: "Willie Maykit"
+    t.string "username", default: "Harry Pitts"
     t.boolean "status", default: true
   end
 

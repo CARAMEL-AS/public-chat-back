@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :user
   post 'user/:id/signout', to: 'user#logout'
   post 'user/:id/verify', to: 'user#accVerify'
+  post 'user/:id/update/profilePic', to: 'user#updatePic'
 
   # MESSAGES ROUTES
   resources :message, only: [:create]

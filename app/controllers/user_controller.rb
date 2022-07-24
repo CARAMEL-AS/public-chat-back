@@ -64,6 +64,17 @@ class UserController < ApplicationController
         end
     end
 
+    def updatePic
+        user = User.find_by(id: params[:id])
+        user.image = params[:image]
+        if user.save
+            render json: user.as_json(except: [:updated_at, :updated_at, :password_digest]), status: :ok
+        else
+            renderObj = {'error': 'Failed to update image!'}
+            render json: renderObj, status: :unprocessable_entity
+        end
+    end
+
     def destroy #delete user account - DELETE /user/:id
         user = User.find_by(id: params[:id])
         renderObj = {
