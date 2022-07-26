@@ -1,4 +1,4 @@
-class SettingsController < ApplicationController
+class SettingController < ApplicationController
 
     def updateLanguage
         setting = Setting.find_by(user_id: params[:user_id])
