@@ -54,22 +54,13 @@ ActiveRecord::Schema.define(version: 2022_07_19_185512) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "socialauths", force: :cascade do |t|
-    t.string "email"
-    t.string "username"
-    t.string "image"
-    t.boolean "online", default: true
-    t.boolean "status", default: true
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "password_digest"
     t.string "image", default: ""
     t.boolean "online", default: true
-    t.string "username", default: "Harry Pitts"
+    t.string "method"
+    t.string "username", default: "Joy Rider"
     t.boolean "status", default: true
   end
 

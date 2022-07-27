@@ -5,6 +5,7 @@ class CreateUsers < ActiveRecord::Migration[6.0]
       t.string :password_digest
       t.string :image, default: ''
       t.boolean :online, default: true
+      t.string :method
       t.string :username, default: Faker::FunnyName.two_word_name
       t.boolean :status, default: true
     end

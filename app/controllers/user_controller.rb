@@ -6,7 +6,9 @@ class UserController < ApplicationController
     def index #user login - GET /user
         user = User.find_by(email: params[:email])
         if user
-            if user.password_digest == params[:password_digest] && user.accverify.verified
+            if user.method != params[:method]
+                render json: {'error': "Please, use password, instead of #{params[:method]}"}
+            elsif user.password_digest == params[:password_digest] && user.accverify.verified
                 renderObj = user.as_json(except: [:created_at, :updated_at, :password_digest], include: [:appwarnings, :accverify, :setting])
                 render json: renderObj, status: :ok
             elsif !user.accverify.verified
@@ -19,6 +21,11 @@ class UserController < ApplicationController
                 renderObj = { 'error': 'Invalid password' }
                 render json: renderObj, status: :unauthorized
             end
+        elsif params[:method] != 'Password'
+            user = User.create({email: params[:email], username: params[:name], password_digest: params[:password_digest], image: params[:image], method: params[:method]})
+            Setting.create({user_id: user.id})
+            Accverify.create({user_id: user.id, code: genCode, verified: true})
+            render json: user.as_json(except: [:created_at, :updated_at, :password_digest], include: [:appwarnings, :accverify, :setting]), status: :created
         else
             renderObj = { 'error': 'Account not found!' }
             render json: renderObj, status: :not_found
@@ -101,12 +108,16 @@ class UserController < ApplicationController
 
     private
 
+    def create_social_account()
+
+    end
+
     def auth_params
         params.permit(:email, :password_digest)
     end
 
     def new_account_params
-        params.permit(:email, :password_digest, :image)
+        params.permit(:email, :password_digest, :image, :method)
     end
 
     def find_user_params

@@ -32,6 +32,7 @@ aftab = User.create({
     email: 'aftab@gmail.com',
     password_digest: '123ABC',
     username: 'Aftab Sidhu',
+    method: 'Password',
     image: 'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/28.png'
 })
 Accverify.create({user_id: aftab.id, code: genCode, verified: true})
@@ -42,6 +43,7 @@ bot = User.create({
     email: 'ChatApp.aftab@gmail.com',
     password_digest: '123IAMBOT',
     username: 'Chat App BOT',
+    method: 'Password',
     image: 'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/female/29.png'
 })
 Accverify.create({user_id: bot.id, code: genCode, verified: true})
