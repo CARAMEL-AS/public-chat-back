@@ -84,18 +84,14 @@ class UserController < ApplicationController
 
     def destroy #delete user account - DELETE /user/:id
         user = User.find_by(id: params[:id])
-        renderObj = {
-            'message': 'Successfully deleted user!'
-        }
         if user.delete
+            byebug
+            renderObj = {
+                'message': 'Successfully deleted user!'
+            }
             render json: renderObj, status: :ok
         else
-            user = Socialauth.find_by_id(params[:id])
-            if user.delete
-                render json: renderObj, status: :ok
-            else
-                render json: {'error': 'User not found'}, status: :not_found
-            end
+            render json: {'error': 'User not found'}, status: :not_found
         end
     end
 
